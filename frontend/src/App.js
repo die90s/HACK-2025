@@ -50,7 +50,7 @@ function App() {
         <div className="sensor-grid">
           <div className="sensor-card">
             <h2>Light Level</h2>
-            <p className="sensor-value">{lightValue} lux</p>
+            <p className="sensor-value">{lightValue} lumens</p>
             <button className="btn-refresh" onClick={() => requestLatestValue('light')}>
               Retrieve Latest Value
             </button>
@@ -64,7 +64,7 @@ function App() {
           </div>
           <div className="sensor-card">
             <h2>Temperature</h2>
-            <p className="sensor-value">{tempValue.toFixed(2)} °C</p>
+            <p className="sensor-value">{tempValue.toFixed(2)} °F</p>
             <button className="btn-refresh" onClick={() => requestLatestValue('temp')}>
               Retrieve Latest Value
             </button>
