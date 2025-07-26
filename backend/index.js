@@ -73,59 +73,28 @@ io.on("connection", (socket) => {
 
 // When connected to MQTT broker, subscribe to relevant topics
 client.on("connect", () => {
-  console.log("Connected to MQTT broker");
-
-  client.subscribe("light", (err) => {
+  console.log("MQTT connected!");
+  client.subscribe(["temp", "humidity", "light", "ultrasonic", "image-desc"], (err) => {
     if (err) {
       console.error("Subscription error:", err);
     } else {
-      console.log("Subscribed to 'light'");
+      console.log("Subscribed to all topics.");
     }
   });
-
-  client.subscribe("humidity", (err) => {
-    if (err) {
-      console.error("Subscription error:", err);
-    } else {
-      console.log("Subscribed to 'humidity'");
-    }
-  });
-
-  client.subscribe("temp", (err) => {
-    if (err) {
-      console.error("Subscription error:", err);
-    } else {
-      console.log("Subscribed to 'temp'");
-    }
-  });
-
-  client.subscribe("ultrasonic", (err) => {
-    if (err) {
-      console.error("Subscription error:", err);
-    } else {
-      console.log("Subscribed to 'ultrasonic'");
-    }
-  });
-
-  client.subscribe("image-desc", (err) => {
-    if (err) {
-      console.error("Subscription error:", err);
-    } else {
-      console.log("Subscribed to 'image-desc'");
-    }
-  });
-
 });
 
 // Handle incoming MQTT messages
 client.on("message", (topic, payload) => {
   const msg = payload.toString();
 
+  console.log(`Received topic: [${topic}], payload: ${msg}`);
+
   switch (topic) {
+    case "temp":
     case "light":
     case "humidity":
-    case "temp":
     case "ultrasonic":
+      console.log(`Emitted ${topic}: ${msg}`);
       io.emit(topic, msg); // Just forward raw string
       break;
 

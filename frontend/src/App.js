@@ -57,21 +57,21 @@ function App() {
           </div>
           <div className="sensor-card">
             <h2>Humidity</h2>
-            <p className="sensor-value">{humidityValue.toFixed(2)} %</p>
+            <p className="sensor-value">{humidityValue} %</p>
             <button className="btn-refresh" onClick={() => requestLatestValue('humidity')}>
               Retrieve Latest Value
             </button>
           </div>
           <div className="sensor-card">
             <h2>Temperature</h2>
-            <p className="sensor-value">{tempValue.toFixed(2)} °F</p>
+            <p className="sensor-value">{tempValue} °F</p>
             <button className="btn-refresh" onClick={() => requestLatestValue('temp')}>
               Retrieve Latest Value
             </button>
           </div>
           <div className="sensor-card">
             <h2>Distance</h2>
-            <p className="sensor-value">{ultrasonicValue.toFixed(2)} cm</p>
+            <p className="sensor-value">{ultrasonicValue} cm</p>
             <button className="btn-refresh" onClick={() => requestLatestValue('ultrasonic')}>
               Retrieve Latest Value
             </button>
