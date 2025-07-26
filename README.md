@@ -1,7 +1,7 @@
 # TO DO
 
-- [ ] Test light, temperature, and humidity sensors
-- [ ] Program the esp-32 according to the README file in the `Cam_Setup` folder
+- [X] Test light, temperature, and humidity sensors
+- [X] Program the esp-32 according to the README file in the `Cam_Setup` folder
 - [ ] Implement API call functionality in the `get_image_desc()` function in the `pico/main.py` file, using the starter python code in the `AI` folder
 - [ ] Test image capturing + AI analysis functionality
 - [ ] Implement distance measuring functionality in the `get_ultrasonic_value()` function in the `pico/main.py` file

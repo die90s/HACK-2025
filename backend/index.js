@@ -1,12 +1,14 @@
 // Load environment variables from .env file
 require('dotenv').config();
-const { exec } = require('child_process');
 
 // Import required modules
 const express = require("express");
 const http = require("http");
 const MQTT = require("mqtt");
 const { Server } = require("socket.io");
+
+const { exec } = require('child_process');
+const { stdout } = require('process');
 
 // Initialize Express app and HTTP server
 const app = express();
@@ -54,19 +56,19 @@ io.on("connection", (socket) => {
   });
 
   socket.on('request-image-desc', (message) => {
-    console.log('Backend received image description request from frontend. Forwarding to MQTT broker...', message);
+    console.log('Backend received image description request from frontend. Calling receive.py...');
     
-
-
-    exec('python3 receive.py', (error, stdout, stderr) => {
+      exec(`venv/bin/python receive.py ${message}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error: ${error.message}`);
         return;
       }
-      console.log(`Output: ${stdout}`);
+
+      console.log(`Python output: ${stdout}`);
+
+      io.emit('image-desc', stdout);  // No need for template strings here
     });
     
-    client.publish("request-image-desc", message.toString());
   });
 
 });
@@ -96,15 +98,6 @@ client.on("message", (topic, payload) => {
     case "ultrasonic":
       console.log(`Emitted ${topic}: ${msg}`);
       io.emit(topic, msg); // Just forward raw string
-      break;
-
-    case "image-desc":
-      try {
-        const imageData = JSON.parse(msg);
-        io.emit("image-desc", imageData); // Forward parsed imag-desc object
-      } catch (err) {
-        console.error("Failed to parse image-description object:", err);
-      }
       break;
 
     default:

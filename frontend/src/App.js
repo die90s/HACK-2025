@@ -10,7 +10,8 @@ function App() {
   const [ humidityValue, setHumidityValue ] = useState(0);
   const [ tempValue, setTempValue ] = useState(0);
   const [ ultrasonicValue, setUltrasonicValue ] = useState(0);
-  const [ imageValue, setImageValue ] = useState({'image':'', 'description':''});
+  const [ imageTimestamp, setImageTimestamp ] = useState(0);
+  const [ imageDescription, setImageDescription ] = useState(0);
 
   // Establishing Node -> React Connection,
   // and appropriate callbacks for subscribed topics
@@ -21,7 +22,7 @@ function App() {
     socket.on('humidity', val => setHumidityValue(val));
     socket.on('temp', val => setTempValue(val));
     socket.on('ultrasonic', val => setUltrasonicValue(val));
-    socket.on('image-desc', val => setImageValue(val));
+    socket.on('image-desc', val => setImageDescription(val));
     
     return () => {
       socket.off('connect');
@@ -29,13 +30,20 @@ function App() {
       socket.off('humidity');
       socket.off('temp');
       socket.off('ultrasonic');
-      socket.off('image-desc'); 
     };
   }, []);
 
   const requestLatestValue = (topic) => {
     console.log(`Requesting latest value for topic: ${topic}`);
     socket.emit(`request-${topic}`, "");
+  };
+
+  const requestLatestImage = () => {
+    console.log(new Date().toLocaleTimeString());
+    setImageTimestamp(Date.now());
+
+    // ask backend to download image, and send it to gpt, and get description, and save description in imageDescription
+    socket.emit("request-image-desc", `http://192.168.50.93/1600x1200.jpg?nocache=${imageTimestamp}`);
   };
 
 // User Interface
@@ -81,22 +89,14 @@ function App() {
         {/* Section for displaying the image and its description */}
         <div className="image-container">
           <h2>Image Analysis</h2>
-          {imageValue.image ? (
-            <>
-              <img 
-                src={"http://192.168.50.93/1600x1200.jpg"} 
-                alt={imageValue.description || "Live feed from camera"} 
-              />
-              <p className="image-description">
-                <strong>Description:</strong> {imageValue.description || "N/A"}
-              </p>
-            </>
-          ) : (
-            <div className="placeholder">
-              <p>Waiting for image from server...</p>
-            </div>
-          )}
-          <button className="btn-refresh" onClick={() => requestLatestValue('image-desc')}>
+          <img 
+                key={imageTimestamp}
+                src={`http://192.168.50.93/1600x1200.jpg?nocache=${imageTimestamp}`} 
+                alt={imageDescription} 
+          />
+          <h2>Image Description</h2>
+          <p>{imageDescription}</p>
+          <button className="btn-refresh" onClick={() => requestLatestImage()}>
             Retrieve Latest Image
           </button>
         </div>
