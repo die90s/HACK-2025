@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
     client.publish("request-temp", message.toString());
   });
 
-  socket.on('request-humidity', (message) => {
+  socket.on('request-ultrasonic', (message) => {
     console.log('Backend received ultrasonic value request from frontend. Forwarding to MQTT broker...', message);
     client.publish("request-ultrasonic", message.toString());
   });
