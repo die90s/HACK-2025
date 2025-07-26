@@ -52,4 +52,3 @@ def connect_internet(ssid, password=None):
     ip = wlan.ifconfig()[0]
     print(f'Connected on {ip}')
     return ip
-

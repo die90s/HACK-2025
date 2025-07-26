@@ -84,7 +84,7 @@ function App() {
           {imageValue.image ? (
             <>
               <img 
-                src={`data:image/jpeg;base64,${imageValue.image}`} 
+                src={"http://192.168.50.93/1600x1200.jpg"} 
                 alt={imageValue.description || "Live feed from camera"} 
               />
               <p className="image-description">

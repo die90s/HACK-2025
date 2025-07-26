@@ -1,10 +1,13 @@
-from connections import connect_mqtt, connect_internet
 from machine import Pin, ADC
 import dht, time
 from time import sleep
+from connections import connect_mqtt, connect_internet
 
 # The following functions are placeholders for actual sensor reading functions, 
 # which will be eventually implemented in separate modules and imported here
+
+requests = None
+
 
 def get_light_value():
     """
@@ -28,7 +31,6 @@ def get_light_value():
     ADC_RANGE = MAX_ADC - 1200 # dont change
     adc_val = photo_ADC.read_u16()
 
-    print(f"adc val: {adc_val}", end = "\t")
     lumens = (-adc_val + MAX_ADC)/(ADC_RANGE)
 
     return lumens
@@ -72,6 +74,8 @@ def get_ultrasonic_value():
     Returns:
         int: The current ultrasonic value.
     """
+
+    # TODO: Implement the ultrasonic sensor reading logic here.
     return 100
 
 def get_image_desc():
@@ -80,31 +84,27 @@ def get_image_desc():
     Returns:
         dictionary: A dictionary containing the image data and its description.
     """
+    recieve.download_image()  # Assuming this function downloads the image and returns its path
+
     return {"image_data": "image_data_placeholder", "description": "A picture of the surroundings."}
 
 # The following function is a callback function that handles all messages published to the Pico's subscribed topics
 def handle_message(topic, msg):
+    global requests
+    
     if   topic == b'request-light':
-        print(f"Pico received light request: {msg}")
-        light_value = get_light_value()
-        client.publish("light", str(light_value))
-    elif topic == b'request-humidity':
-        print(f"Pico received humidity request: {msg}")
-        humidity_value = get_humidity_value() 
-        client.publish("humidity", str(humidity_value))
-    elif topic == b'request-temp':
-        print(f"Pico received temperature request: {msg}")
-        temperature_value = get_temperature_value() 
-        client.publish("temperature", str(temperature_value))
-    elif topic == b'request-ultrasonic':
-        print(f"Pico received ultrasonic request: {msg}")
-        ultrasonic_value = get_ultrasonic_value() 
-        client.publish("ultrasonic", str(ultrasonic_value))
-    elif topic == b'request-image-desc':
-        print(f"Pico received image request: {msg}")
-        image_desc_dict = get_image_desc()
-        json_data = ujson.dumps(image_desc_dict)
-        client.publish("image_desc", json_data)
+        requests['light'] += 1
+        print("pico received light request")
+
+    if topic == b'request-humidity':
+        requests['humidity'] += 1
+        
+    if topic == b'request-temp':
+        requests['temp'] += 1
+ 
+    if topic == b'request-ultrasonic':
+        requests['ultrasonic'] += 1
+
 
 # The following function is the main function that connects to Wi-Fi and MQTT broker, 
 # subscribes to topics, and iteratively keeps checking for new messages in subscribed topics, 
@@ -112,13 +112,23 @@ def handle_message(topic, msg):
 def main():
     try:
         # connect to Wi-Fi and MQTT broker
-        connect_internet("WIFI_NAME", password="WIFI_PASSWORD")  # SSID and password
+        connect_internet("HAcK-Project-WiFi-1", password="UCLA.HAcK.2024.Summer")  # SSID and password
+
         client = connect_mqtt(
             "a1cb083513d9469b91404a586179490c.s1.eu.hivemq.cloud",
-            "MQTT_USERNAME",
-            "MQTT_PASSWORD"
+            "die90s",
+            "Die90s!02"
         )
-
+        
+        global requests
+        
+        requests = {
+            'light': 0,
+            'temp': 0,
+            'humidity': 0,
+            'ultrasonic': 0
+        }
+        
         # Set the message callback handler
         client.set_callback(handle_message)
 
@@ -133,6 +143,26 @@ def main():
         while True:
             client.check_msg()
             sleep(0.1)
+            if requests['light'] > 0:
+                print("pico received light request")
+                client.publish("light", str(get_light_value()))
+                print("published light request")
+                requests['light'] -= 1
+            if requests['humidity'] > 0:
+                print("pico received humidity request")
+                client.publish("humidity", str(get_humidity_value()))
+                print("published humidity request")
+                requests['humidity'] -= 1
+            if requests['temp'] > 0:
+                print("pico received temperature request")
+                client.publish("temperature", str(get_temperature_value()))
+                print("published temperature request")
+                requests['temp'] -= 1
+            if requests['ultrasonic'] > 0:
+                print("pico received ultrasonic request")
+                client.publish("ultrasonic", str(get_ultrasonic_value()))
+                print("published ultrasonic request")
+                requests['ultrasonic'] -= 1
 
     except KeyboardInterrupt:
         print('Keyboard interrupt')

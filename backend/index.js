@@ -1,5 +1,6 @@
 // Load environment variables from .env file
 require('dotenv').config();
+const { exec } = require('child_process');
 
 // Import required modules
 const express = require("express");
@@ -53,7 +54,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on('request-image-desc', (message) => {
-    console.log('Backend received image description from frontend. Forwarding to MQTT broker...', message);
+    console.log('Backend received image description request from frontend. Forwarding to MQTT broker...', message);
+    
+
+
+    exec('python3 receive.py', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error: ${error.message}`);
+        return;
+      }
+      console.log(`Output: ${stdout}`);
+    });
+    
     client.publish("request-image-desc", message.toString());
   });
 
