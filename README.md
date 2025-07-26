@@ -1,9 +1,20 @@
 # TO DO
 
-- [ ] Implement API calls using the starter python code in the 'AI' folder
-- [ ] Program the esp-32 according to the readme in the Cam_Setup folder
-- [ ] Fill out App.js in the frontend folder to customize your website and add the appropriate communication channels (use index.js in the backend as a reference)
-- [ ] Program your pico, adding functionality for any electrical components. You can edit the code on vscode and then transfer files to the pico via thonny, or you can edit the code directly on the pico using thonny.
+- [ ] Test light, temperature, and humidity sensors
+- [ ] Program the esp-32 according to the README file in the `Cam_Setup` folder
+- [ ] Implement API call functionality in the `get_image_desc()` function in the `pico/main.py` file, using the starter python code in the `AI` folder
+- [ ] Test image capturing + AI analysis functionality
+- [ ] Implement distance measuring functionality in the `get_ultrasonic_value()` function in the `pico/main.py` file
+- [ ] Test distance sensor
+- [ ] Upload finalized files in `pico` folder to Pico using Thonny
+- [ ] Finalize hardware design (with 2-D CAD drawings)
+- [ ] Laser cut and 3-D print necessary parts
+- [ ] Assemble device
+- [ ] Create & upload circuit schematics 
+- [ ] Assemble final circuit in breadboard
+- [ ] Solder final circuit
+- [ ] Connect circuit to battery and Pico
+- [ ] Run final tests
     
 
 
