@@ -8,8 +8,8 @@ requests = None
 
 photo_ADC = ADC(Pin(26)) # can change this value for different adc pins
 dht11 = dht.DHT11(Pin(2)) # any io pin
-triggerpin = Pin(3, Pin.OUT) # any io pin
-echopin = Pin(15, Pin.IN) # any io pin
+triggerpin = Pin(0, Pin.OUT) # any io pin
+echopin = Pin(1, Pin.IN) # any io pin
 
 # temp and humidity constants
 CONST_DIFF_TEMP = 77-71
