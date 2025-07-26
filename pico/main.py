@@ -8,6 +8,14 @@ from connections import connect_mqtt, connect_internet
 
 requests = None
 
+def update_display():
+    """Update the display with the latest sensor values."""
+    light = get_light_value()
+    humidity = get_humidity_value()
+    temperature = get_temperature_value()
+    ultrasonic = get_ultrasonic_value()
+
+    # put these values on the display
 
 def get_light_value():
     """
@@ -94,7 +102,6 @@ def handle_message(topic, msg):
     
     if   topic == b'request-light':
         requests['light'] += 1
-        print("pico received light request")
 
     if topic == b'request-humidity':
         requests['humidity'] += 1
@@ -104,6 +111,7 @@ def handle_message(topic, msg):
  
     if topic == b'request-ultrasonic':
         requests['ultrasonic'] += 1
+
 
 
 # The following function is the main function that connects to Wi-Fi and MQTT broker, 
@@ -154,15 +162,17 @@ def main():
                 print("published humidity request")
                 requests['humidity'] -= 1
             if requests['temp'] > 0:
-                print("pico received temperature request")
-                client.publish("temperature", str(get_temperature_value()))
-                print("published temperature request")
+                print("pico received temp request")
+                client.publish("temp", str(get_temperature_value()))
+                print("published temp request with value: ", get_temperature_value())
                 requests['temp'] -= 1
             if requests['ultrasonic'] > 0:
                 print("pico received ultrasonic request")
                 client.publish("ultrasonic", str(get_ultrasonic_value()))
                 print("published ultrasonic request")
                 requests['ultrasonic'] -= 1
+            
+            update_display();
 
     except KeyboardInterrupt:
         print('Keyboard interrupt')
