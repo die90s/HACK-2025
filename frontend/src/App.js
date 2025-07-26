@@ -5,6 +5,7 @@ import './App.css';
 const socket = io('http://localhost:8000');
 
 function App() {
+  const [ socketID, setSocketID ] = useState("Connecting...");
   const [ lightValue, setLightValue ] = useState(0);
   const [ humidityValue, setHumidityValue ] = useState(0);
   const [ tempValue, setTempValue ] = useState(0);
@@ -102,7 +103,7 @@ function App() {
       </main>
 
       <footer className="App-footer">
-        <p>Socket ID: {socket.id ? socket.id : "Connecting..."}</p>
+        <p>Socket ID: {socket.id}</p>
       </footer>
     </div>
   );
