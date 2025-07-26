@@ -1,0 +1,174 @@
+/* --- Global Styles & Variables --- */
+:root {
+  --primary-bg: #1a1a2e;
+  --secondary-bg: #16213e;
+  --card-bg: #0f3460;
+  --text-color: #e94560;
+  --body-text: #dcdcdc;
+  --shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+body {
+  margin: 0;
+  font-family: 'American Typewriter';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--primary-bg);
+  color: var(--body-text);
+}
+
+/* --- Main App Container --- */
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- Header & Footer --- */
+.App-header {
+  background-color: var(--secondary-bg);
+  padding: 1rem 2rem;
+  color: white;
+  box-shadow: var(--shadow);
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--text-color);
+}
+
+img {
+    width: '150px';
+    height: 'auto';
+}
+
+.App-footer {
+  margin-top: auto; 
+  background-color: var(--secondary-bg);
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* --- Main Dashboard --- */
+.dashboard-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+/* --- Sensor Grid Layout --- */
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* --- Sensor Card Styling --- */
+.sensor-card {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.sensor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.sensor-card h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--secondary-bg);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sensor-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+/* --- Image Container --- */
+.image-container {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+.image-container h2 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid var(--secondary-bg);
+}
+
+.image-description {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-style: italic;
+  color: #f0f0f0;
+}
+
+.image-description strong {
+  font-style: normal;
+  color: var(--text-color);
+}
+
+/* --- Image Placeholder --- */
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  border: 2px dashed var(--secondary-bg);
+  border-radius: 8px;
+  color: #aaa;
+}
+
+/* --- Refresh Button Styling --- */
+.btn-refresh {
+  background-color: #e94560; 
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-top: 1.5rem; 
+  align-self: center;
+  width: 90%;
+  max-width: 250px;
+}
+
+.btn-refresh:hover {
+  background-color: #d63447; 
+  transform: scale(1.05); 
+}
+
+.btn-refresh:active {
+  transform: scale(0.98);
+}
