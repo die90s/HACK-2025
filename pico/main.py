@@ -5,6 +5,21 @@ from connections import connect_mqtt, connect_internet
 
 requests = None
 
+photo_ADC = ADC(Pin(26)) # can change this value for different adc pins
+dht11 = dht.DHT11(Pin(2)) # any io pin
+triggerpin = Pin(3, Pin.OUT) # any io pin
+echopin = Pin(15, Pin.IN) # any io pin
+
+# temp and humidity constants
+CONST_DIFF_TEMP = 77-71
+CONST_DIFF_HUMIDITY = 52-61
+
+# adc light constants
+MAX_ADC_PHOTO = 65000
+ADC_RANGE_PHOTO = MAX_ADC_PHOTO - 1200 # dont change
+
+
+
 def update_display():
     """Update the display with the latest sensor values."""
     light = get_light_value()
@@ -14,7 +29,7 @@ def update_display():
 
     # put these values on the display
 
-def get_light_value():
+def get_light_value(photo_ADC_pin: ADC):
     """
     Gets adc value from photoresistor, returns a float for the lumens.
     Assuming to use a 3k ohm resistor in series with the photoresistor
@@ -29,11 +44,9 @@ def get_light_value():
         float: the value of luminosity in lumens
     """
     
-    MAX_ADC = 65000
-    ADC_RANGE = MAX_ADC - 1200 # dont change
     adc_val = photo_ADC_pin.read_u16()
 
-    lumens = (-adc_val + MAX_ADC)/(ADC_RANGE)
+    lumens = (-adc_val + MAX_ADC_PHOTO)/(ADC_RANGE_PHOTO)
 
     return lumens
 
@@ -169,7 +182,7 @@ def main():
                 requests['humidity'] -= 1
             if requests['temp'] > 0:
                 print("pico received temp request")
-                client.publish("temp", str(get_temperature_value()))
+                client.publish("temp", str(get_temperature_value(dht11)))
                 print("published temp request with value: ", get_temperature_value())
                 requests['temp'] -= 1
             if requests['ultrasonic'] > 0:
