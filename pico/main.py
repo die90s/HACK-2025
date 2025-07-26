@@ -22,10 +22,10 @@ ADC_RANGE_PHOTO = MAX_ADC_PHOTO - 1200 # dont change
 
 def update_display():
     """Update the display with the latest sensor values."""
-    light = get_light_value()
-    humidity = get_humidity_value()
-    temperature = get_temperature_value()
-    ultrasonic = get_ultrasonic_value()
+    light = get_light_value(photo_ADC)
+    humidity = get_humidity_value(dht11)
+    temperature = get_temperature_value(dht11)
+    ultrasonic = get_ultrasonic_value(triggerpin, echopin)
 
     # put these values on the display
 
@@ -191,7 +191,7 @@ def main():
                 print("published ultrasonic request")
                 requests['ultrasonic'] -= 1
             
-            update_display();
+            update_display()
 
     except KeyboardInterrupt:
         print('Keyboard interrupt')
