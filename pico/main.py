@@ -112,11 +112,11 @@ def handle_message(topic, msg):
 def main():
     try:
         # connect to Wi-Fi and MQTT broker
-        connect_internet("Diego", password="uclarocks")  # SSID and password
+        connect_internet("WIFI_NAME", password="WIFI_PASSWORD")  # SSID and password
         client = connect_mqtt(
             "a1cb083513d9469b91404a586179490c.s1.eu.hivemq.cloud",
-            "die90s",
-            "Die90s!02"
+            "MQTT_USERNAME",
+            "MQTT_PASSWORD"
         )
 
         # Set the message callback handler
