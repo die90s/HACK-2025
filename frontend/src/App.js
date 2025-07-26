@@ -16,7 +16,7 @@ function App() {
   // and appropriate callbacks for subscribed topics
   useEffect(() => {
 
-    socket.on('connect', () => console.log('Connected: ', socket.id));
+    socket.on('connect', () => { setSocketID(socket.id); });
     socket.on('light', val => setLightValue(val));
     socket.on('humidity', val => setHumidityValue(val));
     socket.on('temp', val => setTempValue(val));
@@ -103,7 +103,7 @@ function App() {
       </main>
 
       <footer className="App-footer">
-        <p>Socket ID: {socket.id}</p>
+        <p>Connected to Socket: {socket.id}</p>
       </footer>
     </div>
   );
