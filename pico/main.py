@@ -2,6 +2,7 @@ from machine import Pin, ADC
 import dht, time
 from time import sleep
 from connections import connect_mqtt, connect_internet
+import utime
 
 requests = None
 
