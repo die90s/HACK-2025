@@ -204,7 +204,7 @@ def main():
 
             if requests['light'] > 0:
                 print("pico received light request")
-                client.publish("light", f(get_light_value(photo_ADC)))
+                client.publish("light", (get_light_value(photo_ADC)))
                 print("published light request")
                 requests['light'] -= 1
             if requests['humidity'] > 0:
