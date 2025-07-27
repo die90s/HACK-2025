@@ -51,6 +51,11 @@ function App() {
     socket.emit("text", text);
   };
 
+const readImageDescription = () => {
+  const utterance = new SpeechSynthesisUtterance(imageDescription);
+  speechSynthesis.speak(utterance);
+};
+
 // User Interface
   return (
     <div className="App">
@@ -103,6 +108,9 @@ function App() {
           <p>{imageDescription}</p>
           <button className="btn-refresh" onClick={() => requestLatestImage()}>
             Retrieve Latest Image
+          </button>
+          <button className="btn-refresh" onClick={() => readImageDescription()}>
+            Read Image Description
           </button>
         </div>
 
