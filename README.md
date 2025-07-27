@@ -34,6 +34,7 @@
 Assumming you have already cloned the repository, you can run the project by:
 
 1. Go to *the backend directory* and install dependencies with `npm install`
+
 2. Add `.env` file with the contents:
 
 ```
@@ -47,10 +48,21 @@ MQTT_PASS=INSERT_PASS
 API_KEY="INSERT_API_KEY"
 ```
 
-4. Start the backend by running `node index.js`
-5. Go to *the frontend directory* and install dependencies with `npm install`
-6. Start the frontend by running `npm start`
-7. Open Thonny IDE and connect Raspberry Pi Pico 2 W
-8. Modify `pico/main.py` to have valid credentials (WiFi and MQTT)
-9. Run `main.py`
+4. Create virtual server with `python3 -m venv venv`
+
+5. Install dependencies (in requirements.txt) with `pip install requests openai python-dotenv`
+
+6. Start the backend by running `node index.js`
+
+7. Go to *the frontend directory* and install dependencies with `npm install`
+
+8. Start the frontend by running `npm start`
+
+9. Open Thonny IDE and connect Raspberry Pi Pico 2 W
+
+10. Modify `pico/main.py` to have valid credentials (WiFi and MQTT)
+
+11. Upload files in `pico` directory to Pico
+
+12. Run `main.py`
 
