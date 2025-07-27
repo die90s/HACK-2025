@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on('request-image-desc', (message) => {
-    console.log('Backend received image description request from frontend. Calling receive.py...');
+    console.log('Backend received image description request from frontend. Running: ', `venv/bin/python receive.py ${message}`);
     
       exec(`venv/bin/python receive.py ${message}`, (error, stdout, stderr) => {
       if (error) {
