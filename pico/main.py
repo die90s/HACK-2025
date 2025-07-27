@@ -46,6 +46,8 @@ def update_display(inputStr=""):
         display.text(f"dist: {distance:.02f} cm", 0, 30, 1)
 
         display.show()
+        
+        time.sleep(0.5)
             
     else:
         numLines = 9
@@ -65,7 +67,7 @@ def update_display(inputStr=""):
 
             display.show()
         
-        time.sleep(10)
+        time.sleep(5)
 
 def get_light_value(photo_ADC_pin: ADC):
     """
@@ -172,7 +174,7 @@ def handle_message(topic, msg):
 def main():
     try:
         # connect to Wi-Fi and MQTT broker
-        connect_internet("HAcK-Project-WiFi-1", password="UCLA.HAcK.2024.Summer")  # SSID and password
+        connect_internet("bruins", password="connect12")  # SSID and password
 
         client = connect_mqtt(
             "a1cb083513d9469b91404a586179490c.s1.eu.hivemq.cloud",
