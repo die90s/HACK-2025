@@ -6,16 +6,22 @@
 - [X] Test image capturing + AI analysis functionality
 - [X] Implement distance measuring functionality in the `get_ultrasonic_value()` function in the `pico/main.py` file
 - [X] Test distance sensor
-- [X] Implement oled display feature
+- [X] Implement oled display feature (displays live data + receives messages)
 - [X] Upload finalized files in `pico` folder to Pico using Thonny
 - [X] Finalize hardware design (with 2-D CAD drawings)
 - [X] Laser cut and 3-D print necessary parts
+- [X] Assemble & test final circuit in breadboard
+- [ ] Finish preparing parts (sanding, cutting holes)
+- [ ] Make parts as aesthetic as possible (laser printed line art on faces, paint, etc.)
 - [ ] Assemble device
-- [ ] Create & upload circuit schematics 
-- [ ] Assemble final circuit in breadboard
 - [ ] Solder final circuit
-- [ ] Connect circuit to battery and Pico
+- [ ] Connect circuit to batteries
+- [ ] Test final circuit
+- [ ] Integrate circuit into device
+- [ ] Create & upload circuit schematics
 - [ ] Run final tests
+- [ ] Make powerpoint slides
+- [ ] Record presentation
     
 
 
