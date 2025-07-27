@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import io from 'socket.io-client';
 import './App.css';
+import ReactMarkdown from 'react-markdown';
 
 const socket = io('http://localhost:8000');
 
@@ -106,7 +107,7 @@ const readImageDescription = () => {
           />
 
           <h2>Image Description</h2>
-          <p>{imageDescription}</p>
+          <ReactMarkdown>{imageDescription}</ReactMarkdown>
 
           <div className="btn-container">
             <button className="btn-refresh" onClick={() => readImageDescription()}>
