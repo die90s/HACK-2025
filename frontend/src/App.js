@@ -5,13 +5,13 @@ import './App.css';
 const socket = io('http://localhost:8000');
 
 function App() {
-  const [ socketID, setSocketID ] = useState("Connecting...");
+  const [ socketID, setSocketID ] = useState("");
   const [ lightValue, setLightValue ] = useState(0);
   const [ humidityValue, setHumidityValue ] = useState(0);
   const [ tempValue, setTempValue ] = useState(0);
   const [ ultrasonicValue, setUltrasonicValue ] = useState(0);
-  const [ imageTimestamp, setImageTimestamp ] = useState(0);
-  const [ imageDescription, setImageDescription ] = useState(0);
+  const [ imageTimestamp, setImageTimestamp ] = useState("");
+  const [ imageDescription, setImageDescription ] = useState("");
 
   // Establishing Node -> React Connection,
   // and appropriate callbacks for subscribed topics
@@ -60,12 +60,12 @@ const readImageDescription = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <img src="/team-name.svg" alt="Team Name" style={{ width: '150px', height: 'auto' }} />
+        <img src="/team-name.svg" alt="Team Name" style={{ width: '200px', height: 'auto' }} />
       </header>
       
       <main className="dashboard-container">
         {/* Grid for displaying sensor data cards */}
-        <div className="sensor-grid">
+        <div className="sensor-card-container">
           <div className="sensor-card">
             <h2>Light Level</h2>
             <p className="sensor-value">{lightValue} lumens</p>
@@ -104,14 +104,18 @@ const readImageDescription = () => {
                 src={`http://192.168.50.93/1600x1200.jpg?nocache=${imageTimestamp}`} 
                 alt={imageDescription} 
           />
+
           <h2>Image Description</h2>
           <p>{imageDescription}</p>
-          <button className="btn-refresh" onClick={() => requestLatestImage()}>
-            Retrieve Latest Image
-          </button>
-          <button className="btn-refresh" onClick={() => readImageDescription()}>
-            Read Image Description
-          </button>
+
+          <div className="btn-container">
+            <button className="btn-refresh" onClick={() => readImageDescription()}>
+              Read Image Description
+            </button>
+            <button className="btn-refresh" onClick={() => requestLatestImage()}>
+              Retrieve Latest Image
+            </button>
+          </div>
         </div>
 
         <div className="operator-input">
