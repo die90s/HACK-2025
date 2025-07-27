@@ -9,7 +9,7 @@ photo_ADC = ADC(Pin(26)) # can change this value for different adc pins
 dht11 = dht.DHT11(Pin(2)) # any io pin
 triggerpin = Pin(3, Pin.OUT) # any io pin
 echopin = Pin(4, Pin.IN) # any io pin
-i2c = I2C(1, sda=Pin(6), scl=Pin(7)) # needs to be sda and scl i2c pins
+i2c = I2C(0, sda=Pin(8), scl=Pin(9)) # needs to be sda and scl i2c pins
 display = ssd1306.SSD1306_I2C(128, 64, i2c)
 
 # temp and humidity constants
@@ -60,7 +60,8 @@ def update_display(inputStr=""):
             y_val += increment
 
             display.show()
-            time.sleep(10)
+        
+        time.sleep(10)
 
 def get_light_value(photo_ADC_pin: ADC):
     """
