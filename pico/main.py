@@ -1,8 +1,7 @@
 from machine import Pin, ADC
-import dht, time
+import dht, time, utime, ssd1306
 from time import sleep
 from connections import connect_mqtt, connect_internet
-import utime
 
 requests = None
 
@@ -10,6 +9,8 @@ photo_ADC = ADC(Pin(26)) # can change this value for different adc pins
 dht11 = dht.DHT11(Pin(2)) # any io pin
 triggerpin = Pin(3, Pin.OUT) # any io pin
 echopin = Pin(4, Pin.IN) # any io pin
+i2c = I2C(1, sda=Pin(6), scl=Pin(7)) # needs to be sda and scl i2c pins
+display = ssd1306.SSD1306_I2C(128, 64, i2c)
 
 # temp and humidity constants
 CONST_DIFF_TEMP = 77-71
@@ -19,16 +20,47 @@ CONST_DIFF_HUMIDITY = 52-61
 MAX_ADC_PHOTO = 65000
 ADC_RANGE_PHOTO = MAX_ADC_PHOTO - 1200 # dont change
 
+def update_display(inputStr=""):
+    """
+    Updtates display with temp, humidity, light, and distance.
+    Optional parameter to display 144 character string instead.
+    """
 
+    display.fill(0)
+    display.show()
 
-# def update_display():
-#     """Update the display with the latest sensor values."""
-#     light = get_light_value(photo_ADC)
-#     humidity = get_humidity_value(dht11)
-#     temperature = get_temperature_value(dht11)
-#     ultrasonic = get_ultrasonic_value(triggerpin, echopin)
+    if inputStr == "":
+        """Update the display with the latest sensor values."""
+        light = get_light_value(photo_ADC)
+        humidity = get_humidity_value(dht11)
+        temperature = get_temperature_value(dht11)
+        ultrasonic = get_ultrasonic_value(triggerpin, echopin)
 
-#     # put these values on the display
+        display.text(f"light: {light:.02f} lm", 0, 0, 1)
+        display.text(f"hum: {humidity:.02f}%", 0, 10, 1)
+        display.text(f"temp: {temperature:.02f} F", 0, 20, 1)
+        display.text(f"dist: {distance:.02f} cm", 0, 30, 1)
+
+        display.show()
+            
+    else:
+        numLines = 9
+        increment = 8
+        y_val = 0
+        stringList = []
+
+        display.fill(0)
+        display.show()
+
+        for i in range(0, len(inputStr), 16):
+            stringList.append(inputStr[i : i + 16])
+
+        for string in stringList:
+            display.text(string, 0, y_val, 1)
+            y_val += increment
+
+            display.show()
+            time.sleep(10)
 
 def get_light_value(photo_ADC_pin: ADC):
     """
@@ -162,7 +194,7 @@ def main():
             sleep(0.1)
             if requests['light'] > 0:
                 print("pico received light request")
-                client.publish("light", str(get_light_value(photo_ADC)))
+                client.publish("light", f(get_light_value(photo_ADC)))
                 print("published light request")
                 requests['light'] -= 1
             if requests['humidity'] > 0:
