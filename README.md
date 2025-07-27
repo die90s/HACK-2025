@@ -48,15 +48,32 @@ MQTT_PASS=INSERT_PASS
 API_KEY="INSERT_API_KEY"
 ```
 
-4. Create virtual server with `python3 -m venv venv`
+4. Create virtual server with 
 
-5. Install dependencies (in requirements.txt) with `pip install requests openai python-dotenv`
+```
+python3 -m venv venv
+```
 
-6. Start the backend by running `node index.js`
+5. Install dependencies (in requirements.txt) with 
 
-7. Go to *the frontend directory* and install dependencies with `npm install`
+```
+pip install requests openai python-dotenv
+```
 
-8. Start the frontend by running `npm start`
+6. Start the backend by running 
+```
+node index.js
+```
+
+7. Go to *the frontend directory* and install dependencies with 
+```
+npm install
+```
+
+8. Start the frontend by running 
+```
+npm start
+```
 
 9. Open Thonny IDE and connect Raspberry Pi Pico 2 W
 
