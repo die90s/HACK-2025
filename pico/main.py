@@ -1,4 +1,4 @@
-from machine import Pin, ADC
+from machine import Pin, ADC, I2C
 import dht, time, utime, ssd1306
 from time import sleep
 from connections import connect_mqtt, connect_internet
@@ -34,7 +34,7 @@ def update_display(inputStr=""):
         light = get_light_value(photo_ADC)
         humidity = get_humidity_value(dht11)
         temperature = get_temperature_value(dht11)
-        ultrasonic = get_ultrasonic_value(triggerpin, echopin)
+        distance = get_ultrasonic_value(triggerpin, echopin)
 
         display.text(f"light: {light:.02f} lm", 0, 0, 1)
         display.text(f"hum: {humidity:.02f}%", 0, 10, 1)
@@ -154,6 +154,11 @@ def handle_message(topic, msg):
     if topic == b'request-ultrasonic':
         requests['ultrasonic'] += 1
 
+    if topic == b'text':
+        inputStr = msg.decode('utf-8')
+        print("Received text: ", inputStr)
+        update_display(inputStr)
+
 
 
 # The following function is the main function that connects to Wi-Fi and MQTT broker, 
@@ -177,6 +182,7 @@ def main():
             'temp': 0,
             'humidity': 0,
             'ultrasonic': 0
+            'text': 0
         }
         
         # Set the message callback handler
@@ -187,11 +193,15 @@ def main():
         client.subscribe("request-humidity")
         client.subscribe("request-temp")
         client.subscribe("request-ultrasonic")
+        client.subscribe("text")
 
         # keep checking for new messages in subscribed topics
         while True:
+
             client.check_msg()
+
             sleep(0.1)
+
             if requests['light'] > 0:
                 print("pico received light request")
                 client.publish("light", f(get_light_value(photo_ADC)))
@@ -212,8 +222,9 @@ def main():
                 client.publish("ultrasonic", str(get_ultrasonic_value(triggerpin, echopin)))
                 print("published ultrasonic request")
                 requests['ultrasonic'] -= 1
-            
-            # update_display()
+
+            update_display()
+
 
     except KeyboardInterrupt:
         print('Keyboard interrupt')

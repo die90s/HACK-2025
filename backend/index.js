@@ -35,6 +35,7 @@ const client = MQTT.connect(process.env.CONNECT_URL, {
 
 // Handle incoming WebSocket connections from frontend (forward them to MQTT broker)
 io.on("connection", (socket) => {
+  
   socket.on('request-light', (message) => {
     console.log('Backend received light value request from frontend. Forwarding to MQTT broker...', message);
     client.publish("request-light", message.toString());
@@ -68,15 +69,19 @@ io.on("connection", (socket) => {
 
       io.emit('image-desc', stdout);  // No need for template strings here
     });
-    
   });
+
+  socket.on('text', (message) => {
+    console.log("Backend received text from frontend. Forwarding to Pico...");
+    client.publish('text', message.toString());
+  })
 
 });
 
 // When connected to MQTT broker, subscribe to relevant topics
 client.on("connect", () => {
   console.log("MQTT connected!");
-  client.subscribe(["temp", "humidity", "light", "ultrasonic", "image-desc"], (err) => {
+  client.subscribe(["temp", "humidity", "light", "ultrasonic"], (err) => {
     if (err) {
       console.error("Subscription error:", err);
     } else {

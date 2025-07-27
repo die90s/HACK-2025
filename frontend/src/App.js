@@ -46,6 +46,11 @@ function App() {
     socket.emit("request-image-desc", `http://192.168.50.93/1600x1200.jpg?nocache=${imageTimestamp}`);
   };
 
+  const sendTextToPico = () => {
+    const text = document.getElementById("operatorText").value;
+    socket.emit("text", text);
+  };
+
 // User Interface
   return (
     <div className="App">
@@ -100,6 +105,19 @@ function App() {
             Retrieve Latest Image
           </button>
         </div>
+
+        <div className="operator-input">
+          <h2>Operator Input</h2>
+          <textarea
+            id="operatorText"
+            rows="4"
+            cols="50"
+            placeholder="Enter your command here"
+          ></textarea>
+          <br />
+          <button onClick={sendTextToPico}>Send</button>
+        </div>
+
       </main>
 
       <footer className="App-footer">

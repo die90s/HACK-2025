@@ -8,6 +8,8 @@ import sys
 script_dir = os.path.dirname(os.path.abspath(__file__))
 filename = os.path.join(script_dir, "../frontend/src/downloaded_image.jpg") 
 
+print(sys.executable)
+
 url = "http://172.20.10.6/1024x768.jpg"             # You will have to change the IP Address
 
 # Function to download the image from esp32, given to you
