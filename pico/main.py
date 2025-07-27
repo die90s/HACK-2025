@@ -3,7 +3,7 @@ import dht, time, utime, ssd1306
 from time import sleep
 from connections import connect_mqtt, connect_internet
 
-requests = None
+requests = None # global variable to keep track of requests
 
 photo_ADC = ADC(Pin(26)) # can change this value for different adc pins
 dht11 = dht.DHT11(Pin(2)) # any io pin
@@ -22,7 +22,7 @@ ADC_RANGE_PHOTO = MAX_ADC_PHOTO - 1200 # dont change
 
 def update_display(inputStr=""):
     """
-    Updtates display with temp, humidity, light, and distance.
+    Updates display with temp, humidity, light, and distance.
     Optional parameter to display 144 character string instead.
     """
 
@@ -181,7 +181,7 @@ def main():
             'light': 0,
             'temp': 0,
             'humidity': 0,
-            'ultrasonic': 0
+            'ultrasonic': 0,
             'text': 0
         }
         
