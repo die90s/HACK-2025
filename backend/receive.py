@@ -40,7 +40,7 @@ response = client.responses.create(
         {
             "role": "user",
             "content": [
-                { "type": "input_text", "text": "what's in this image?" },
+                { "type": "input_text", "text": "Give me a detailed description of this image. If applicable, be sure to describe where it is, what it is, the quantity of it, and origin" },
                 {
                     "type": "input_image",
                     "image_url": f"data:image/jpeg;base64,{base64_image}",
