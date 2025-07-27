@@ -1,16 +1,5 @@
 # TO DO
 
-- [X] Test light, temperature, and humidity sensors
-- [X] Program the esp-32 according to the README file in the `Cam_Setup` folder
-- [X] Implement API call functionality in the `get_image_desc()` function in the `pico/main.py` file, using the starter python code in the `AI` folder
-- [X] Test image capturing + AI analysis functionality
-- [X] Implement distance measuring functionality in the `get_ultrasonic_value()` function in the `pico/main.py` file
-- [X] Test distance sensor
-- [X] Implement oled display feature (displays live data + receives messages)
-- [X] Upload finalized files in `pico` folder to Pico using Thonny
-- [X] Finalize hardware design (with 2-D CAD drawings)
-- [X] Laser cut and 3-D print necessary parts
-- [X] Assemble & test final circuit in breadboard
 - [ ] Finish preparing parts (sanding, cutting holes)
 - [ ] Make parts as aesthetic as possible (laser printed line art on faces, paint, etc.)
 - [ ] Assemble device
@@ -22,6 +11,21 @@
 - [ ] Run final tests
 - [ ] Make powerpoint slides
 - [ ] Record presentation
+
+**Recently Completed:**
+
+- [X] Test light, temperature, and humidity sensors
+- [X] Program the esp-32 according to the README file in the `Cam_Setup` folder
+- [X] Implement API call functionality in the `get_image_desc()` function in the `pico/main.py` file, using the starter python code in the `AI` folder
+- [X] Test image capturing + AI analysis functionality
+- [X] Implement distance measuring functionality in the `get_ultrasonic_value()` function in the `pico/main.py` file
+- [X] Test distance sensor
+- [X] Implement oled display feature (displays live data + receives messages)
+- [X] Upload finalized files in `pico` folder to Pico using Thonny
+- [X] Finalize hardware design (with 2-D CAD drawings)
+- [X] Laser cut and 3-D print necessary parts
+- [X] Assemble & test final circuit in breadboard
+
     
 
 
