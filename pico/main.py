@@ -2,8 +2,14 @@ from machine import Pin, ADC, I2C
 import dht, time, utime, ssd1306
 from time import sleep
 from connections import connect_mqtt, connect_internet
+import sys
+import uio
+
+error_buffer = uio.StringIO()
 
 requests = None # global variable to keep track of requests
+
+picoLed = Pin("LED", Pin.OUT) # built-in led on pico
 
 # for light sensor
 photo_ADC = ADC(Pin(26)) # can change this value for different adc pins
@@ -131,7 +137,7 @@ def get_ultrasonic_value(trigger: Pin, echo: Pin):
     utime.sleep_us(2)   
     trigger.high()
     utime.sleep_us(5)
-    trigger.low
+    trigger.low()
 
     while echo.value() == 0:
         signaloff = utime.ticks_us()
@@ -163,7 +169,7 @@ def handle_message(topic, msg):
 
     if topic == b'text':
         inputStr = msg.decode('utf-8')
-        print("Received text: ", inputStr)
+        # print("Received text: ", inputStr)
         update_display(inputStr)
 
 
@@ -173,8 +179,10 @@ def handle_message(topic, msg):
 # and handles them accordingly (using the handle_message function defined above)
 def main():
     try:
+
+        picoLed.on()
         # connect to Wi-Fi and MQTT broker
-        connect_internet("bruins", password="connect12")  # SSID and password
+        connect_internet("HAcK-Project-WiFi-1", password="UCLA.HAcK.2024.Summer")  # SSID and password
 
         client = connect_mqtt(
             "a1cb083513d9469b91404a586179490c.s1.eu.hivemq.cloud",
@@ -210,34 +218,50 @@ def main():
             sleep(0.1)
 
             if requests['light'] > 0:
-                print("pico received light request")
+                # print("pico received light request")
                 client.publish("light", str(get_light_value(photo_ADC)))
-                print("published light request")
+                # print("published light request")
                 requests['light'] -= 1
                 
             if requests['humidity'] > 0:
-                print("pico received humidity request")
+                # print("pico received humidity request")
                 client.publish("humidity", str(get_humidity_value(dht11)))
-                print("published humidity request")
+                # print("published humidity request")
                 requests['humidity'] -= 1
                 
             if requests['temp'] > 0:
-                print("pico received temp request")
+                # print("pico received temp request")
                 client.publish("temp", str(get_temperature_value(dht11)))
-                print("published temp request with value: ", get_temperature_value(dht11))
+                # print("published temp request with value: ", get_temperature_value(dht11))
                 requests['temp'] -= 1
                 
             if requests['ultrasonic'] > 0:
-                print("pico received ultrasonic request")
+                # print("pico received ultrasonic request")
                 client.publish("ultrasonic", str(get_ultrasonic_value(triggerpin, echopin)))
-                print("published ultrasonic request")
+                # print("published ultrasonic request")
                 requests['ultrasonic'] -= 1
 
             update_display()
+            
 
 
-    except KeyboardInterrupt:
-        print('Keyboard interrupt')
+    except Exception as e:
+        for _ in range(3):
+            picoLed.off()
+            sleep(0.5)
+            picoLed.on()
+            sleep(0.5)
+        print("Caught exception. Logging...")
+        sys.print_exception(e, error_buffer)
+        try:
+            with open("error_log.txt", "a") as f:
+                f.write("=== Test Error ===\n")
+                f.write(error_buffer.getvalue())
+                f.write("\n")
+            print("Log written to file.")
+        except Exception as write_err:
+            print("Failed to write log:", write_err)
 
 if __name__ == "__main__":
     main()
+
