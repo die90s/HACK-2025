@@ -133,7 +133,13 @@ const readImageDescription = () => {
       </main>
 
       <footer className="App-footer">
-        <p>Connected to Socket: {socket.id}</p>
+        {socketID ? (
+          <p>Connected to backend via socket {socketID}</p>
+        ) : (
+          <p>Not connected to backend</p>
+        )
+        }
+        
       </footer>
     </div>
   );
