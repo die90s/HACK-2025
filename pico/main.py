@@ -19,9 +19,9 @@ CONST_DIFF_HUMIDITY = 52-61
 triggerpin = Pin(3, Pin.OUT) # any io pin
 echopin = Pin(4, Pin.IN) # any io pin
 
-# # for display
-# i2c = I2C(0, sda=Pin(8), scl=Pin(9)) # needs to be sda and scl i2c pins
-# display = ssd1306.SSD1306_I2C(128, 64, i2c)
+# for display
+i2c = I2C(0, sda=Pin(8), scl=Pin(9)) # needs to be sda and scl i2c pins
+display = ssd1306.SSD1306_I2C(128, 64, i2c)
 
 
 def update_display(inputStr=""):
@@ -30,42 +30,42 @@ def update_display(inputStr=""):
     Optional parameter to display 144 character string instead.
     """
 
-    # display.fill(0)
-    # display.show()
+    display.fill(0)
+    display.show()
 
-    # if inputStr == "":
-    #     """Update the display with the latest sensor values."""
-    #     light = get_light_value(photo_ADC)
-    #     humidity = get_humidity_value(dht11)
-    #     temperature = get_temperature_value(dht11)
-    #     distance = get_ultrasonic_value(triggerpin, echopin)
+    if inputStr == "":
+        """Update the display with the latest sensor values."""
+        light = get_light_value(photo_ADC)
+        humidity = get_humidity_value(dht11)
+        temperature = get_temperature_value(dht11)
+        distance = get_ultrasonic_value(triggerpin, echopin)
 
-    #     display.text(f"light: {light:.02f} lm", 0, 0, 1)
-    #     display.text(f"hum: {humidity:.02f}%", 0, 10, 1)
-    #     display.text(f"temp: {temperature:.02f} F", 0, 20, 1)
-    #     display.text(f"dist: {distance:.02f} cm", 0, 30, 1)
+        display.text(f"light: {light:.02f} lm", 0, 0, 1)
+        display.text(f"hum: {humidity:.02f}%", 0, 10, 1)
+        display.text(f"temp: {temperature:.02f} F", 0, 20, 1)
+        display.text(f"dist: {distance:.02f} cm", 0, 30, 1)
 
-    #     display.show()
+        display.show()
             
-    # else:
-    #     numLines = 9
-    #     increment = 8
-    #     y_val = 0
-    #     stringList = []
+    else:
+        numLines = 9
+        increment = 8
+        y_val = 0
+        stringList = []
 
-    #     display.fill(0)
-    #     display.show()
+        display.fill(0)
+        display.show()
 
-    #     for i in range(0, len(inputStr), 16):
-    #         stringList.append(inputStr[i : i + 16])
+        for i in range(0, len(inputStr), 16):
+            stringList.append(inputStr[i : i + 16])
 
-    #     for string in stringList:
-    #         display.text(string, 0, y_val, 1)
-    #         y_val += increment
+        for string in stringList:
+            display.text(string, 0, y_val, 1)
+            y_val += increment
 
-    #         display.show()
+            display.show()
         
-    #     time.sleep(10)
+        time.sleep(10)
 
 def get_light_value(photo_ADC_pin: ADC):
     """
