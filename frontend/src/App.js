@@ -43,7 +43,7 @@ function App() {
     setImageTimestamp(Date.now());
 
     // ask backend to download image, and send it to gpt, and get description, and save description in imageDescription
-    socket.emit("request-image-desc", `http://192.168.50.93/1600x1200.jpg?nocache=${imageTimestamp}`);
+    socket.emit("request-image-desc", `http://192.168.0.106/1600x1200.jpg?nocache=${imageTimestamp}`);
   };
 
   const sendTextToPico = () => {
@@ -101,7 +101,7 @@ const readImageDescription = () => {
           <h2>Image Analysis</h2>
           <img 
                 key={imageTimestamp}
-                src={`http://192.168.50.93/1600x1200.jpg?nocache=${imageTimestamp}`} 
+                src={`http://192.168.0.106/1600x1200.jpg?nocache=${imageTimestamp}`} 
                 alt={imageDescription} 
           />
 
