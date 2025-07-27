@@ -2,13 +2,14 @@
 
 - [X] Test light, temperature, and humidity sensors
 - [X] Program the esp-32 according to the README file in the `Cam_Setup` folder
-- [ ] Implement API call functionality in the `get_image_desc()` function in the `pico/main.py` file, using the starter python code in the `AI` folder
-- [ ] Test image capturing + AI analysis functionality
-- [ ] Implement distance measuring functionality in the `get_ultrasonic_value()` function in the `pico/main.py` file
-- [ ] Test distance sensor
-- [ ] Upload finalized files in `pico` folder to Pico using Thonny
-- [ ] Finalize hardware design (with 2-D CAD drawings)
-- [ ] Laser cut and 3-D print necessary parts
+- [X] Implement API call functionality in the `get_image_desc()` function in the `pico/main.py` file, using the starter python code in the `AI` folder
+- [X] Test image capturing + AI analysis functionality
+- [X] Implement distance measuring functionality in the `get_ultrasonic_value()` function in the `pico/main.py` file
+- [X] Test distance sensor
+- [X] Implement oled display feature
+- [X] Upload finalized files in `pico` folder to Pico using Thonny
+- [X] Finalize hardware design (with 2-D CAD drawings)
+- [X] Laser cut and 3-D print necessary parts
 - [ ] Assemble device
 - [ ] Create & upload circuit schematics 
 - [ ] Assemble final circuit in breadboard
