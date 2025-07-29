@@ -43,7 +43,7 @@ CONNECT_URL=mqtts://INSERT_URL:INSERT_PORT
 MQTT_USER=INSERT_USER
 MQTT_PASS=INSERT_PASS
 ```
-3. Add `secret.py` file with the contents:
+3. Add `secrets.py` file with the contents:
 
 ```
 API_KEY="INSERT_API_KEY"
