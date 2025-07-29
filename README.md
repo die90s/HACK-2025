@@ -61,7 +61,7 @@ python3 -m venv venv
 pip install requests openai python-dotenv
 ```
 
-6. Start the backend by running 
+6. Start the backend by running (make sure virtual environment is activated first)
 ```
 node index.js
 ```
@@ -71,16 +71,19 @@ node index.js
 npm install
 ```
 
-8. Start the frontend by running 
+8. In `frontend/src/App.js` change the host name in `IMAGE_URL` constant to the one that corresponds to the ESP camera. 
+
+9. Start the frontend by running 
 ```
 npm start
 ```
 
-9. Open Thonny IDE and connect Raspberry Pi Pico 2 W
+10. Open Thonny IDE and connect Raspberry Pi Pico 2 W
 
-10. Modify `pico/main.py` to have valid credentials (WiFi and MQTT)
+11. Modify `pico/main.py` to have valid credentials (WiFi and MQTT)
 
-11. Upload files in `pico` directory to Pico
+12. Upload files in `pico` directory to Pico
 
-12. Run `main.py`
+13. Run `main.py` from computer, or connect pico to external battery
+
 
