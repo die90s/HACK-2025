@@ -4,6 +4,7 @@ import './App.css';
 import ReactMarkdown from 'react-markdown';
 
 const socket = io('http://localhost:8000');
+const IMAGE_URL = "http://192.168.0.106/1600x1200.jpg?nocache=${imageTimestamp}";
 
 function App() {
   const [ socketID, setSocketID ] = useState("");
@@ -14,7 +15,7 @@ function App() {
   const [ imageTimestamp, setImageTimestamp ] = useState("");
   const [ imageDescription, setImageDescription ] = useState("");
 
-  // Establishing Node -> React Connection,
+  // set up node -> react connection,
   // and appropriate callbacks for subscribed topics
   useEffect(() => {
 
@@ -34,6 +35,9 @@ function App() {
     };
   }, []);
 
+
+// Functions which handle website user requests
+
   const requestLatestValue = (topic) => {
     console.log(`Requesting latest value for topic: ${topic}`);
     socket.emit(`request-${topic}`, "");
@@ -43,8 +47,7 @@ function App() {
     console.log(new Date().toLocaleTimeString());
     setImageTimestamp(Date.now());
 
-    // ask backend to download image, and send it to gpt, and get description, and save description in imageDescription
-    socket.emit("request-image-desc", `http://192.168.0.106/1600x1200.jpg?nocache=${imageTimestamp}`);
+    socket.emit("request-image-desc", `${IMAGE_URL}`);
   };
 
   const sendTextToPico = () => {
@@ -65,7 +68,7 @@ const readImageDescription = () => {
       </header>
       
       <main className="dashboard-container">
-        {/* Grid for displaying sensor data cards */}
+
         <div className="sensor-card-container">
           <div className="sensor-card">
             <h2>Light Level</h2>
@@ -97,13 +100,12 @@ const readImageDescription = () => {
           </div>
         </div>
 
-        {/* Section for displaying the image and its description */}
         <div className="image-container">
           <h2>Image Analysis</h2>
           <img 
                 key={imageTimestamp}
-                src={`http://192.168.0.106/1600x1200.jpg?nocache=${imageTimestamp}`} 
-                alt={imageDescription} 
+                src={`${IMAGE_URL}`} 
+                alt="Picture taken by ESP Camera" 
           />
 
           <h2>Image Description</h2>

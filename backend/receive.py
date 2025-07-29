@@ -1,39 +1,40 @@
 
-filename = "../frontend/src/image.jpg"
+imagePath = "../frontend/src/image.jpg"
 
 import requests
 import os
 import sys
 
-# Function to download the image from esp32, given to you
+# function to download the image from esp32
 def download_image(url):
     response = requests.get(url)
 
     if response.status_code == 200:
-        with open(filename, "wb") as f:
+        with open(imagePath, "wb") as f:
             f.write(response.content)
-        # print(f"Image saved to: {filename}")
+        print(f"Image saved to: {imagePath}")
     else:
         print("Failed to download image. Status code:", response.status_code)
 
-# Download the image from the ESP32 camera
+# download the image from the ESP32 camera (must pass URL as command line argument)
 download_image(sys.argv[1] if len(sys.argv) > 1 else None)
 
 
 import base64
-import os
 from openai import OpenAI
 from secrets import API_KEY
 
 
-client = OpenAI(api_key=API_KEY)  # ← Load from environment
+client = OpenAI(api_key=API_KEY)
 
+# function to encode the image to base64
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode("utf-8")
 
-base64_image = encode_image(filename)
+base64_image = encode_image(imagePath)
 
+# send the image to OpenAI API and get a response
 response = client.responses.create(
     model="gpt-4.1",
     input=[
@@ -50,4 +51,5 @@ response = client.responses.create(
     ],
 ) 
 
+# print the response from OpenAI API
 print(response.output_text)

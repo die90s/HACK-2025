@@ -14,7 +14,7 @@ const { stdout } = require('process');
 const app = express();
 const server = http.createServer(app);
 
-// Initialize Socket.IO server with CORS settings to allow any origin
+// Initialize Socket.IO server (for frontend communication)
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -22,20 +22,55 @@ const io = new Server(server, {
   }
 });
 
-// Connect to the MQTT broker using credentials from .env
+// Connect to the MQTT broker (for pico communication) using credentials from .env
 const client = MQTT.connect(process.env.CONNECT_URL, {
-  clientId: "frontend",                // Unique ID for this MQTT client
-  username: process.env.MQTT_USER,    // MQTT username from environment
-  password: process.env.MQTT_PASS,    // MQTT password from environment
-  clean: true,                        // Start with a clean session
-  connectTimeout: 3000,               // Connection timeout (in ms)
-  reconnectPeriod: 10000,             // Reconnect every 10s if disconnected
-  rejectUnauthorized: false           // Allow self-signed certs (if using TLS)
+  clientId: "frontend",
+  username: process.env.MQTT_USER,
+  password: process.env.MQTT_PASS,
+  clean: true,
+  connectTimeout: 3000,    
+  reconnectPeriod: 10000,
+  rejectUnauthorized: false
 });
 
-// Handle incoming WebSocket connections from frontend (forward them to MQTT broker)
+// When MQTT broker connection is established,
+// subscribe to relevant topics
+client.on("connect", () => {
+  console.log("MQTT connected!");
+  client.subscribe(["temp", "humidity", "light", "ultrasonic"], (err) => {
+    if (err) {
+      console.error("Subscription error:", err);
+    } else {
+      console.log("Subscribed to all topics.");
+    }
+  });
+});
+
+// Set up handler for incoming MQTT messages
+client.on("message", (topic, payload) => {
+  const msg = payload.toString();
+
+  console.log(`Received topic: [${topic}], payload: ${msg}`);
+
+  switch (topic) {
+    case "temp":
+    case "light":
+    case "humidity":
+    case "ultrasonic":
+      console.log(`Emitted ${topic}: ${msg}`);
+      io.emit(topic, msg); // Just forward raw string
+      break;
+
+    default:
+      console.warn("Unhandled topic:", topic);
+  }
+});
+
+// Set up socket subscriptions and handlers for incoming frontend requests
 io.on("connection", (socket) => {
-  
+
+  // Forward sensor data requests to MQTT broker
+
   socket.on('request-light', (message) => {
     console.log('Backend received light value request from frontend. Forwarding to MQTT broker...', message);
     client.publish("request-light", message.toString());
@@ -56,21 +91,28 @@ io.on("connection", (socket) => {
     client.publish("request-ultrasonic", message.toString());
   });
 
+// When frontend requests latest image,
+// 1. Run python script that:
+//  1.1 Downloads latest image into frontend/src/image.jpg
+//  1.2 Converts the image to bytes and requests ChatGPT to describe it via an API request
+//  1.3 Prints (returns) the result to the console
+// 2. Forward the result to the frontend via socket
   socket.on('request-image-desc', (message) => {
     console.log('Backend received image description request from frontend. Running: ', `venv/bin/python receive.py ${message}`);
     
-      exec(`venv/bin/python receive.py ${message}`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error: ${error.message}`);
-        return;
-      }
+    exec(`venv/bin/python receive.py ${message}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error: ${error.message}`);
+      return;
+    }
 
-      console.log(`Python output: ${stdout}`);
+    console.log(`Python output: ${stdout}`);
 
-      io.emit('image-desc', stdout);  // No need for template strings here
+    io.emit('image-desc', stdout);
     });
   });
 
+  // Forward incoming frontend text data to pico (for display on device)
   socket.on('text', (message) => {
     console.log("Backend received text from frontend. Forwarding to Pico...");
     client.publish('text', message.toString());
@@ -78,37 +120,7 @@ io.on("connection", (socket) => {
 
 });
 
-// When connected to MQTT broker, subscribe to relevant topics
-client.on("connect", () => {
-  console.log("MQTT connected!");
-  client.subscribe(["temp", "humidity", "light", "ultrasonic"], (err) => {
-    if (err) {
-      console.error("Subscription error:", err);
-    } else {
-      console.log("Subscribed to all topics.");
-    }
-  });
-});
 
-// Handle incoming MQTT messages
-client.on("message", (topic, payload) => {
-  const msg = payload.toString();
-
-  console.log(`Received topic: [${topic}], payload: ${msg}`);
-
-  switch (topic) {
-    case "temp":
-    case "light":
-    case "humidity":
-    case "ultrasonic":
-      console.log(`Emitted ${topic}: ${msg}`);
-      io.emit(topic, msg); // Just forward raw string
-      break;
-
-    default:
-      console.warn("Unhandled topic:", topic);
-  }
-});
 
 // Start the HTTP server on port 8000
 server.listen(8000, () => {
