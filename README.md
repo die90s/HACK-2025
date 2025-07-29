@@ -49,10 +49,11 @@ MQTT_PASS=INSERT_PASS
 API_KEY="INSERT_API_KEY"
 ```
 
-4. Create virtual server with 
+4. Create and activate virtual server with 
 
 ```
 python3 -m venv venv
+source venv/bin/activate
 ```
 
 5. Install dependencies (in requirements.txt) with 
@@ -61,7 +62,7 @@ python3 -m venv venv
 pip install requests openai python-dotenv
 ```
 
-6. Start the backend by running (make sure virtual environment is activated first)
+6. Start the backend by running
 ```
 node index.js
 ```
