@@ -1,19 +1,22 @@
 # TO DO
 
-- [ ] Finish preparing parts (sanding, cutting holes)
-- [ ] Make parts as aesthetic as possible (laser printed line art on faces, paint, etc.)
-- [ ] Assemble device
-- [ ] Solder final circuit
-- [ ] Connect circuit to batteries
-- [ ] Test final circuit
-- [ ] Integrate circuit into device
-- [ ] Create & upload circuit schematics
-- [ ] Run final tests
 - [ ] Make powerpoint slides
 - [ ] Record presentation
 
-**Recently Completed:**
+**Recently Completed**
 
+7/28:
+- [X] Finish preparing parts (sanding, cutting holes)
+- [X] Make parts as aesthetic as possible (laser printed line art on faces, paint, etc.)
+- [X] Assemble device
+- [X] Solder final circuit
+- [X] Connect circuit to batteries
+- [X] Test final circuit
+- [X] Integrate circuit into device
+- [X] Create & upload circuit schematics
+- [X] Run final tests
+
+7/27:
 - [X] Test light, temperature, and humidity sensors
 - [X] Program the esp-32 according to the README file in the `Cam_Setup` folder
 - [X] Implement API call functionality in the `get_image_desc()` function in the `pico/main.py` file, using the starter python code in the `AI` folder
@@ -25,8 +28,6 @@
 - [X] Finalize hardware design (with 2-D CAD drawings)
 - [X] Laser cut and 3-D print necessary parts
 - [X] Assemble & test final circuit in breadboard
-
-    
 
 
 # Set Up Instructions
