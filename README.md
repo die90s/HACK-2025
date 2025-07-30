@@ -1,11 +1,10 @@
 # TO DO
 
-- [ ] Make powerpoint slides
-- [ ] Record presentation
-
 **Recently Completed**
 
 7/28:
+- [X] Make powerpoint slides
+- [X] Record presentation
 - [X] Finish preparing parts (sanding, cutting holes)
 - [X] Make parts as aesthetic as possible (laser printed line art on faces, paint, etc.)
 - [X] Assemble device
